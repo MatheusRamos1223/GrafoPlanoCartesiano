@@ -53,6 +53,7 @@ Sempre que um ponto é adicionado ou removido:
 - todas as arestas são recalculadas
 - o grafo é reconstruído automaticamente
 - novas conexões são geradas
+- possiveis buracos no grafo também são tratados e reconectados em pares dos mais próximos
 
 Isso mantém a estrutura das rotas consistente.
 
@@ -66,6 +67,7 @@ O projeto implementa o algoritmo de Dijkstra para calcular o menor caminho entre
 - HashMap para registrar o ponto anterior no caminho
 - HashSet para controlar os pontos visitados
 - PriorityQueue para sempre selecionar o ponto com menor custo acumulado
+- Queue para buscar conectados a partir de origem e seus vizinhos seguintes
 
 ### Funcionamento geral
 
