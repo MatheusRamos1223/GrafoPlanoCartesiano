@@ -1,4 +1,4 @@
-Cartesiano (Plano Cartesiano em Java)
+## Cartesiano (Plano Cartesiano em Java)
 
 Projeto de estudo em Programação Orientada a Objetos (POO) usando Java.
 Permite criar pontos nomeados no plano cartesiano, manipulá-los via menu no console e calcular rotas entre pontos utilizando um grafo com algoritmo de menor caminho.
