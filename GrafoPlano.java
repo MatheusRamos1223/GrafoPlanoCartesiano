@@ -19,7 +19,8 @@ import java.util.Optional;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
-
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class GrafoPlano {
     private ArrayList<PontoNomeado> listaPontos;
@@ -209,7 +210,54 @@ public class GrafoPlano {
                
         }
     
+    public HashSet<PontoNomeado> buscarConectadosAPartir(PontoNomeado inicio) {
+        HashSet<PontoNomeado> visitados = new HashSet<>();
+        Queue<PontoNomeado> fila = new LinkedList<>();
+
+        visitados.add(inicio);
+        fila.add(inicio);
+
+        while (!fila.isEmpty()) {
+            PontoNomeado atual = fila.poll();
+
+            for (PontoNomeado vizinho : obterVizinhos(atual)) {
+                if (!visitados.contains(vizinho)) {
+                    visitados.add(vizinho);
+                    fila.add(vizinho);
+                }
+            }
+        }
+
+    return visitados;
+    }
     
+    public Aresta conectarComponentesMaisProximos(HashSet<PontoNomeado> conectados) {
+        PontoNomeado melhorConectado = null;
+        PontoNomeado melhorDesconectado = null;
+        double menorDistancia = Double.POSITIVE_INFINITY;
+
+        for (PontoNomeado pConectado : conectados) {
+            for (PontoNomeado p : listaPontos) {
+                if (conectados.contains(p)) {
+                    continue;
+                }
+
+                double distancia = pConectado.distance(p);
+
+                if (distancia < menorDistancia) {
+                    menorDistancia = distancia;
+                    melhorConectado = pConectado;
+                    melhorDesconectado = p;
+                }
+            }
+        }
+
+        if (melhorConectado != null && melhorDesconectado != null) {
+            return conectar(melhorConectado, melhorDesconectado);
+        }
+
+    return null;
+}
     
     public Aresta reconstruirGrafo(){
         if(listaArestas.isEmpty()){
@@ -237,6 +285,18 @@ public class GrafoPlano {
                 }
                 gerarConexaoPonto(p);
                 }
+            
+        HashSet<PontoNomeado> conectados = buscarConectadosAPartir(origem);
+            //Caso para tratar buracos no grafo conectando pares desconectados
+        while (conectados.size() < listaPontos.size()) {
+            Aresta ponte = conectarComponentesMaisProximos(conectados);
+
+            if (ponte == null) {
+                break;
+            }
+
+            conectados = buscarConectadosAPartir(origem);
+        }
         return null;
     }
             
